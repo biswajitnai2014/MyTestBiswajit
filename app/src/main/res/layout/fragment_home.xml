@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragment.HomeFragment">
+
+
+        <Button
+            android:id="@+id/btnCaptureImage"
+            android:layout_marginHorizontal="15dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Capture Image"
+            app:layout_constraintBottom_toTopOf="@+id/btnGalary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnGalary"
+            android:layout_marginHorizontal="15dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Image From Galary"
+            app:layout_constraintBottom_toTopOf="@+id/btnVideo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnCaptureImage" />
+
+        <Button
+            android:id="@+id/btnVideo"
+            android:layout_marginHorizontal="15dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Video"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnGalary" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

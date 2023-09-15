@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1044101843901",
+    "firebase_url": "https://myloc-30008.firebaseio.com",
+    "project_id": "myloc-30008",
+    "storage_bucket": "myloc-30008.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044101843901:android:9acb184b41790f481820d4",
+        "android_client_info": {
+          "package_name": "com.bis.mytestbiswajit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1044101843901-s3eifur57j5iisdvps60degm4nul2jrv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3jxNCaDOVG1dmzhupWt0GqOusZwf984Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1044101843901-s3eifur57j5iisdvps60degm4nul2jrv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
