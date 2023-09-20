@@ -50,6 +50,8 @@
             app:layout_constraintStart_toStartOf="parent" />
 
 
+
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview"
             android:layout_width="300dp"

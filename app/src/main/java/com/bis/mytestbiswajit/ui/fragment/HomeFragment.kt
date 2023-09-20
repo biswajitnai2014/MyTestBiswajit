@@ -76,6 +76,11 @@ class HomeFragment : BaseFragment() {
             isVideo = false
             checkPermission()
         }
+        binding.btnBlueTooth.setOnClickListener {
+
+            (activity as? MainActivity)?.goToBluetooth(null)
+        }
+
 
         binding.btnVideo.setOnClickListener {
             isVideo = true

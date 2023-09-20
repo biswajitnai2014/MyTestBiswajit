@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -36,8 +37,11 @@ class MainActivity : BaseActivity() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         binding.lifecycleOwner = this
         init()
+
+
         binding.executePendingBindings()
     }
+
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun init() {
@@ -45,13 +49,14 @@ class MainActivity : BaseActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         checkPermission()
+
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun checkPermission() {
-        if (PermissionUtils.hasVideoRecordingPermissions(this@MainActivity)) {
+        if (!PermissionUtils.hasVideoRecordingPermissions(this@MainActivity)) {
 
-        } else {
+
             PermissionUtils.requestVideoRecordingPermission(this, object : PermissionsCallback {
                 override fun onPermissionRequest(granted: Boolean) {
                     if (!granted) {
@@ -138,5 +143,18 @@ class MainActivity : BaseActivity() {
                 startActivity(getpermission)
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun goToBluetooth(uri:Uri?){
+        PermissionUtils.requestBluetoothPermission(this,object:PermissionsCallback{
+                override fun onPermissionRequest(granted: Boolean) {
+                    val intent=Intent(this@MainActivity,BluetoothActivity::class.java)
+                    intent.putExtra("path",uri.toString())
+                    startActivity(intent)
+                }
+            })
+
+
     }
 }

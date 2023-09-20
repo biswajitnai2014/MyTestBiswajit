@@ -16,6 +16,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bis.mytestbiswajit.R
 import com.bis.mytestbiswajit.databinding.FragmentPreviewBinding
+import com.bis.mytestbiswajit.ui.activity.MainActivity
 import com.bis.mytestbiswajit.ui.base.BaseFragment
 import com.bis.mytestbiswajit.utils.MyConstants.STATIC_OBJ.isVideo
 import com.bis.mytestbiswajit.viewModel.MainViewModel
@@ -25,7 +26,7 @@ class PreviewFragment : BaseFragment() {
     lateinit var binding: FragmentPreviewBinding
     private val mainViewModel: MainViewModel by activityViewModels()
     var mediaControls: MediaController? = null
-
+    var path:Uri?=null
     private lateinit var countDownTimer: CountDownTimer
     private val initialCountDown: Long = 30000
     private val countDownInterval: Long = 1000
@@ -40,7 +41,8 @@ class PreviewFragment : BaseFragment() {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
@@ -53,7 +55,7 @@ class PreviewFragment : BaseFragment() {
         mainViewModel.apply {
 
             filePath.observe(viewLifecycleOwner){
-
+                path=it
 
                 if (!isVideo){
                     binding.imgPreview.visibility=View.VISIBLE
@@ -75,10 +77,12 @@ class PreviewFragment : BaseFragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun onViewClick(){
         binding.appCompatButton.setOnClickListener{
             findNavController().navigate(R.id.action_previewFragment_to_homeFragment)
         }
+
     }
 
 
