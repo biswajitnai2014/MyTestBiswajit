@@ -16,10 +16,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bis.mytestbiswajit.R
 import com.bis.mytestbiswajit.databinding.FragmentPreviewBinding
-import com.bis.mytestbiswajit.ui.activity.MainActivity
 import com.bis.mytestbiswajit.ui.base.BaseFragment
 import com.bis.mytestbiswajit.utils.MyConstants.STATIC_OBJ.isVideo
-import com.bis.mytestbiswajit.viewModel.MainViewModel
+import com.bis.mytestbiswajit.network.viewModel.MainViewModel
 
 
 class PreviewFragment : BaseFragment() {
@@ -82,7 +81,9 @@ class PreviewFragment : BaseFragment() {
         binding.appCompatButton.setOnClickListener{
             findNavController().navigate(R.id.action_previewFragment_to_homeFragment)
         }
-
+        binding.textView.setOnClickListener {
+            findNavController().navigate(R.id.action_previewFragment_to_uplodeFragmentFragment)
+        }
     }
 
 

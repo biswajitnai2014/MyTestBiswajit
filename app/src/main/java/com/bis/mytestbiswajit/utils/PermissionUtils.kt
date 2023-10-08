@@ -27,7 +27,6 @@ object PermissionUtils {
                 Manifest.permission.READ_MEDIA_AUDIO,
                 Manifest.permission.CAMERA,
                 Manifest.permission.RECORD_AUDIO,
-
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ).apply {
@@ -56,19 +55,10 @@ object PermissionUtils {
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private val BLUETOOTH_PERMISSIONS:MutableList<String> =
             mutableListOf(
-
                 Manifest.permission.BLUETOOTH_CONNECT,
                 Manifest.permission.BLUETOOTH_ADVERTISE,
                 Manifest.permission.BLUETOOTH_SCAN,
-
             )
-
-
-
-
-
-
-
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun requestVideoRecordingPermission(context: Context, callback: PermissionsCallback) {

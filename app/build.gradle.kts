@@ -94,6 +94,20 @@ dependencies {
 
     //glide
     implementation ("com.github.bumptech.glide:glide:4.14.2")
+
+
+    //https://square.github.io/retrofit/
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
+
+
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+// define any required OkHttp artifacts without version
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 }
 
 

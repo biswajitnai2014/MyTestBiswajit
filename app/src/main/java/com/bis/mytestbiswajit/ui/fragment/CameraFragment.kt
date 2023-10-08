@@ -41,7 +41,7 @@ import com.bis.mytestbiswajit.utils.MyConstants.STATIC_OBJ.isVideo
 import com.bis.mytestbiswajit.utils.PermissionUtils
 import com.bis.mytestbiswajit.utils.PermissionUtils.createAlertDialog
 import com.bis.mytestbiswajit.utils.PermissionsCallback
-import com.bis.mytestbiswajit.viewModel.MainViewModel
+import com.bis.mytestbiswajit.network.viewModel.MainViewModel
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -99,7 +99,14 @@ class CameraFragment : BaseFragment() {
     fun onViewClick() {
         binding.apply {
             btnCaptureImg.setOnClickListener {
-                takePhoto()
+                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+                    takePhotoAndroidQ()
+                }
+                else{
+                    takePhoto()
+                }
+
+
             }
             btnCaptureVideo.setOnClickListener {
                 btnCaptureVideo.visibility = View.GONE
@@ -117,6 +124,29 @@ class CameraFragment : BaseFragment() {
 
         }
 
+    }
+
+    private fun takePhotoAndroidQ() {
+        val outputDirectory = File(binding.btnCaptureImg.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "YourAppDirectoryName")
+        outputDirectory.mkdirs()
+
+        val photoFile = File(outputDirectory, "photo.jpg")
+
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+
+        imageCapture?.takePicture(outputOptions, ContextCompat.getMainExecutor(binding.btnCaptureImg.context), object : ImageCapture.OnImageSavedCallback {
+            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+
+                outputFileResults.savedUri?.let { mainViewModel.filePath.value = it }
+                findNavController().navigate(R.id.action_cameraFragment_to_previewFragment)
+                // Image capture successful, you can handle success here
+            }
+
+            override fun onError(exception: ImageCaptureException) {
+                // Handle error here
+                Log.e(TAG, "Photo capture failed: ${exception.message}", exception)
+            }
+        })
     }
 
     fun startCamera() {
@@ -178,7 +208,8 @@ class CameraFragment : BaseFragment() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 // For Android 10 and higher, use RELATIVE_PATH
-                put(MediaStore.Video.Media.RELATIVE_PATH, "Biswajit/image")
+                put(MediaStore.Video.Media.RELATIVE_PATH, Environment.DIRECTORY_MOVIES + "/Biswajit")
+                //put(MediaStore.Video.Media.RELATIVE_PATH, "Biswajit/image")
             } else {
                 // For versions prior to Android 10, manage the file operations manually
                 val directoryPath = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -253,7 +284,8 @@ class CameraFragment : BaseFragment() {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     // For Android 10 and higher, use RELATIVE_PATH
-                    put(MediaStore.Video.Media.RELATIVE_PATH, "Biswajit/video")
+                  //  put(MediaStore.Video.Media.RELATIVE_PATH, "Biswajit/video")
+                    put(MediaStore.Video.Media.RELATIVE_PATH, Environment.DIRECTORY_MOVIES + "/Biswajit")
                 } else {
                     // For versions prior to Android 10, manage the file operations manually
                     val directoryPath = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

@@ -1,10 +1,10 @@
 package com.bis.mytestbiswajit.ui.activity
 
 import android.app.AlertDialog
+import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import android.widget.Button
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -19,10 +20,14 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.bis.mytestbiswajit.R
 import com.bis.mytestbiswajit.databinding.ActivityMainBinding
+import com.bis.mytestbiswajit.network.ApiInterface
+import com.bis.mytestbiswajit.network.ApiUtility
+import com.bis.mytestbiswajit.network.repository.MainRepository
 import com.bis.mytestbiswajit.ui.base.BaseActivity
 import com.bis.mytestbiswajit.utils.PermissionUtils
 import com.bis.mytestbiswajit.utils.PermissionsCallback
-import com.bis.mytestbiswajit.viewModel.MainViewModel
+import com.bis.mytestbiswajit.network.viewModel.MainViewModel
+import com.bis.mytestbiswajit.network.viewModel.ViewModelFactory
 
 
 class MainActivity : BaseActivity() {
@@ -34,17 +39,20 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        //mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         binding.lifecycleOwner = this
         init()
-
-
         binding.executePendingBindings()
     }
 
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun init() {
+        val apiInterface= ApiUtility.getInstance().create(ApiInterface::class.java)
+        val mainRepository= MainRepository(apiInterface)
+
+       //mainViewModel=ViewModelProvider(this@MainActivity,ViewModelFactory(mainRepository)).get()
+        mainViewModel = ViewModelProvider(this@MainActivity, ViewModelFactory(mainRepository)).get(MainViewModel::class.java)
         val navHostFragment: NavHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
@@ -151,7 +159,13 @@ class MainActivity : BaseActivity() {
                 override fun onPermissionRequest(granted: Boolean) {
                     val intent=Intent(this@MainActivity,BluetoothActivity::class.java)
                     intent.putExtra("path",uri.toString())
-                    startActivity(intent)
+                   if (BluetoothAdapter.getDefaultAdapter()!=null){
+                       startActivity(intent)
+                   } else {
+
+                       Toast.makeText(binding.root.context, "This device does not support bluetooth", Toast.LENGTH_SHORT).show()
+                   }
+
                 }
             })
 

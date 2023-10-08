@@ -7,9 +7,11 @@ import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Handler
 import android.os.Message
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.bis.mytestbiswajit.utils.FileUtil.getDownloadFolder
 import com.bis.mytestbiswajit.utils.MyConstants.STATIC_OBJ.FILE_NAME
@@ -71,16 +73,7 @@ class BluetoothService(
                         ctx,
                         Manifest.permission.BLUETOOTH_CONNECT
                     ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-
-                }
+                ) {}
                 serverSocket=adapter.listenUsingRfcommWithServiceRecord("Chat App", UUID.fromString(UUID_VALUE))
             }catch (io:IOException){
 
@@ -163,6 +156,7 @@ class BluetoothService(
         private  var inputStream:InputStream?=null
         private  var outputStream:OutputStream?=null
 
+        @RequiresApi(Build.VERSION_CODES.Q)
         override fun run() {
             super.run()
             /*val buffer=ByteArray(1024)
@@ -182,7 +176,12 @@ class BluetoothService(
 
             val folder = File(ctx.getExternalFilesDir(null), "bluetoothCheck")
             if (folder != null && !folder.exists()) folder.mkdirs()
-            val receivedFile = File(folder, "received_file")
+            val receivedFile = if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
+                createTempFilePath(ctx)
+            }
+            else{
+                File(folder, "received_file")
+            }
             try {
                 while (true) {
                     bytesRead = inputStream?.read(buffer) ?: -1
@@ -205,6 +204,14 @@ class BluetoothService(
 
             }
 
+        @RequiresApi(Build.VERSION_CODES.Q)
+        private fun createTempFilePath(context: Context): File {
+            val fileName = "temp_file_" + System.currentTimeMillis()+".png"
+            val storageDir = context.cacheDir
+            val filePath = File(storageDir, fileName)
+            return filePath
+        }
+
         private fun writeDataToFile(data: ByteArray, length: Int, receivedFile: File) {
             try {
                 // Create or open the file for writing
@@ -213,7 +220,12 @@ class BluetoothService(
 
                 val folder = getDownloadFolder(ctx)//File(ctx.getExternalFilesDir(null), "bluetoothCheck")
                 //if (folder != null && !folder.exists()) folder.mkdirs()
-                val receivedFile = File(folder, FILE_NAME)
+                val receivedFile = if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+                    createTempFilePath(ctx)
+                }
+                else{
+                    File(folder, FILE_NAME)
+                }
                 Log.d("TAG_file_path", "writeDataToFile: $receivedFile")
                 val fileOutputStream = FileOutputStream(receivedFile, true)
 
@@ -264,7 +276,5 @@ class BluetoothService(
             }
 
         }
-
-
-    }
+}
 }

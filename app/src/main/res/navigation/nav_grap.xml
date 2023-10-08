@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_previewFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_previewFragment_to_uplodeFragmentFragment"
+            app:destination="@id/uplodeFragmentFragment" />
     </fragment>
 
     <fragment
@@ -36,4 +39,8 @@
             android:id="@+id/action_cameraFragment_to_previewFragment"
             app:destination="@id/previewFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/uplodeFragmentFragment"
+        android:name="com.bis.mytestbiswajit.ui.fragment.UplodeFragmentFragment"
+        android:label="UplodeFragmentFragment" />
 </navigation>

@@ -17,7 +17,7 @@ import com.bis.mytestbiswajit.utils.DeviceNameOnClickListner
 
 class DeviceListAdapter(
     private val context: Context,
-    private val bluetoothDeviceList: List<BluetoothDevice>,
+    var bluetoothDeviceList: ArrayList<BluetoothDevice>,
     private val deviceNameOnClickListner: DeviceNameOnClickListner
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -35,7 +35,9 @@ class DeviceListAdapter(
 
                 }
                 tvDevice.apply {
-                    text = bluetoothDevice.name.toString()
+                    bluetoothDevice.name?.let {name->
+                        text =name.toString()                    }
+
                     tvDevice.setOnClickListener {
                         deviceNameOnClickListner.showDevice(bluetoothDevice)
                     }

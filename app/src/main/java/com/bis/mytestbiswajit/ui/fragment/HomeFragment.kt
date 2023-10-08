@@ -1,12 +1,14 @@
 package com.bis.mytestbiswajit.ui.fragment
 
 import android.Manifest
-import android.content.Intent
+import android.content.Context
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.provider.Settings
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +25,7 @@ import com.bis.mytestbiswajit.databinding.FragmentHomeBinding
 import com.bis.mytestbiswajit.ui.activity.MainActivity
 import com.bis.mytestbiswajit.ui.base.BaseFragment
 import com.bis.mytestbiswajit.utils.MyConstants.STATIC_OBJ.isVideo
-import com.bis.mytestbiswajit.viewModel.MainViewModel
+import com.bis.mytestbiswajit.network.viewModel.MainViewModel
 
 
 class HomeFragment : BaseFragment() {
@@ -69,7 +71,9 @@ class HomeFragment : BaseFragment() {
     fun onViewClick() {
         binding.btnGalary.setOnClickListener {
             isVideo = false
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+
+           pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+
         }
 
         binding.btnCaptureImage.setOnClickListener {
@@ -111,4 +115,20 @@ class HomeFragment : BaseFragment() {
             findNavController().navigate(R.id.action_homeFragment_to_cameraFragment)
         }
     }
+
+    private fun getFilePathFromContentUriQ(context: Context, contentUri: Uri): String? {
+        val cursor: Cursor? = context.contentResolver.query(contentUri, null, null, null, null)
+        return cursor?.use {
+            it.moveToFirst()
+            val columnIndex = it.getColumnIndex(MediaStore.Images.Media.DATA)
+            if (columnIndex != -1) {
+                it.getString(columnIndex)
+            } else {
+                null
+            }
+        }
+    }
+
+
+
 }
